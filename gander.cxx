@@ -45,9 +45,11 @@ private:
     RapidGL::Node* root;
     RapidGL::Reader reader;
     const std::string filename;
+    double zoom;
 // Methods
     static M3d::Mat4 getProjectionMatrix();
     static M3d::Mat4 getViewMatrix();
+    void mouseWheelMoved(int movement);
     void render();
 };
 
@@ -57,7 +59,10 @@ private:
  * @param filename Path to the file to open
  * @throws std::runtime_error
  */
-Gander::Gander(const std::string& filename) : filename(filename), root(NULL) {
+Gander::Gander(const std::string& filename) :
+        filename(filename),
+        root(NULL),
+        zoom(-5.0) {
 
     // Capture working directory before GLFW changes it
 #ifdef __APPLE__
@@ -117,6 +122,14 @@ M3d::Mat4 Gander::getViewMatrix() {
     return translationMatrix;
 }
 
+void Gander::mouseWheelMoved(int movement) {
+    if (movement > 0) {
+        zoom++;
+    } else if (movement < 0) {
+        zoom--;
+    }
+}
+
 void Gander::render() {
 
     // Set up state
@@ -161,11 +174,30 @@ void Gander::run() {
     // Disable depth
     glDisable(GL_DEPTH_TEST);
 
+    // Set up variables to hold event state
+    int lastMouseWheelPosition = 0;
+
     // Render
     render();
     while (glfwGetWindowParam(GLFW_OPENED)) {
+
+        // Wait for new events
         glfwWaitEvents();
-        render();
+        bool changed = false;
+
+        // Check for mouse wheel
+        int mouseWheelPosition = glfwGetMouseWheel();
+        int mouseWheelMovement = mouseWheelPosition - lastMouseWheelPosition;
+        lastMouseWheelPosition = mouseWheelPosition;
+        if (mouseWheelMovement != 0) {
+            changed = true;
+            mouseWheelMoved(mouseWheelMovement);
+        }
+
+        // Render if anything changed
+        if (changed) {
+            render();
+        }
     }
 }
 

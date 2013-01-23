@@ -42,11 +42,13 @@ public:
     void run();
 private:
 // Attributes
+    RapidGL::Node* root;
     RapidGL::Reader reader;
     const std::string filename;
 // Methods
     static M3d::Mat4 getProjectionMatrix();
     static M3d::Mat4 getViewMatrix();
+    void render();
 };
 
 /**
@@ -55,7 +57,7 @@ private:
  * @param filename Path to the file to open
  * @throws std::runtime_error
  */
-Gander::Gander(const std::string& filename) : filename(filename) {
+Gander::Gander(const std::string& filename) : filename(filename), root(NULL) {
 
     // Capture working directory before GLFW changes it
 #ifdef __APPLE__
@@ -115,6 +117,21 @@ M3d::Mat4 Gander::getViewMatrix() {
     return translationMatrix;
 }
 
+void Gander::render() {
+
+    // Set up state
+    RapidGL::State state;
+    state.setProjectionMatrix(getProjectionMatrix());
+    state.setViewMatrix(getViewMatrix());
+
+    // Visit the root node
+    RapidGL::Visitor visitor(&state);
+    visitor.visit(root);
+
+    // Refresh
+    glfwSwapBuffers();
+}
+
 /**
  * Runs the application.
  */
@@ -139,22 +156,16 @@ void Gander::run() {
     glfwSetWindowTitle(filename.c_str());
 
     // Read file
-    RapidGL::Node* root = reader.read(file);
+    root = reader.read(file);
 
     // Disable depth
     glDisable(GL_DEPTH_TEST);
 
-    // Make state and visitor
-    RapidGL::State state;
-    state.setViewMatrix(getViewMatrix());
-    state.setProjectionMatrix(getProjectionMatrix());
-    RapidGL::Visitor visitor(&state);
-
     // Render
+    render();
     while (glfwGetWindowParam(GLFW_OPENED)) {
-        visitor.visit(root);
-        glfwSwapBuffers();
         glfwWaitEvents();
+        render();
     }
 }
 

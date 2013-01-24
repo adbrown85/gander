@@ -31,6 +31,58 @@
 #include <RapidGL/UseNodeUnmarshaller.h>
 
 
+class Ray {
+public:
+// Methods
+    Ray(const M3d::Vec3& o, const M3d::Vec3& d) : o(o), d(d) { }
+// Attributes
+    M3d::Vec3 o;
+    M3d::Vec3 d;
+};
+
+
+class Sphere {
+public:
+// Methods
+    Sphere(double radius) : radius(radius) { }
+    double intersectedByRay(const Ray& ray) const;
+// Attributes
+    double radius;
+};
+
+
+double Sphere::intersectedByRay(const Ray& ray) const {
+
+    const double a = dot(ray.d, ray.d);
+    const double b = 2 * dot(ray.d, ray.o);
+    const double c = dot(ray.o, ray.o) - (radius * radius);
+
+    double q;
+    if (b < 0) {
+        q = (-b + sqrt(b * b - 4.0 * a * c)) / 2.0;
+    } else {
+        q = (-b - sqrt(b * b - 4.0 * a * c)) / 2.0;
+    }
+
+    double t0 = q / a;
+    double t1 = c / q;
+
+    if (t0 > t1) {
+        std::swap(t0, t1);
+    }
+
+    if (t0 < 0) {
+        if (t1 < 0) {
+            return -1;
+        } else {
+            return t1;
+        }
+    } else {
+        return t0;
+    }
+}
+
+
 /**
  * Application.
  */
@@ -47,7 +99,10 @@ private:
     const std::string filename;
     double zoom;
     M3d::Quat rotation;
+    int previousX;
+    int previousY;
 // Methods
+    static Ray createRay(int x, int y);
     static M3d::Mat4 getProjectionMatrix();
     M3d::Mat4 getViewMatrix() const;
     void mouseMoved(int dx, int dy);
@@ -65,7 +120,9 @@ Gander::Gander(const std::string& filename) :
         filename(filename),
         root(NULL),
         zoom(-5.0),
-        rotation(0, 0, 0, 1) {
+        rotation(0, 0, 0, 1),
+        previousX(0),
+        previousY(0) {
 
     // Capture working directory before GLFW changes it
 #ifdef __APPLE__
@@ -109,6 +166,24 @@ Gander::~Gander() {
     glfwTerminate();
 }
 
+Ray Gander::createRay(const int x, const int y) {
+
+    // Compute origin
+    M3d::Vec3 o;
+    o.x = (2.0 * ((double) x) / 768.0) - 1.0;
+    o.y = (2.0 * (768.0 - ((double) y)) / 768.0) - 1.0;
+    o.z = 1.0;
+
+    // Compute direction
+    M3d::Vec3 d;
+    d.x = 0;
+    d.y = 0;
+    d.z = -1;
+
+    // Return ray
+    return Ray(o, d);
+}
+
 /**
  * Computes the projection matrix.
  */
@@ -132,20 +207,46 @@ M3d::Mat4 Gander::getViewMatrix() const {
     return translationMatrix * rotationMatrix;
 }
 
-void Gander::mouseMoved(const int dx, const int dy) {
+void Gander::mouseMoved(const int x, const int y) {
 
-    // Compute rotation around X axis
-    M3d::Vec3 xAxis = M3d::Vec3(1, 0, 0);
-    const double xAngle = M3d::toRadians(dy);
-    M3d::Quat xRotation = M3d::Quat::fromAxisAngle(xAxis, xAngle);
+    // Make sphere
+    const Sphere sphere(0.95);
 
-    // Compute rotation around Y axis
-    M3d::Vec3 yAxis = M3d::Vec3(0, 1, 0);
-    const double yAngle = M3d::toRadians(dx);
-    M3d::Quat yRotation = M3d::Quat::fromAxisAngle(yAxis, yAngle);
+    // Compute rays
+    const Ray r1 = createRay(previousX, previousY);
+    const Ray r2 = createRay(x, y);
 
-    // Concatenate
-    rotation = xRotation * yRotation * rotation;
+    // Compute intersections
+    const double t1 = sphere.intersectedByRay(r1);
+    const double t2 = sphere.intersectedByRay(r2);
+
+    // Update last mouse coordinates
+    previousX = x;
+    previousY = y;
+
+    // No intersection
+    if ((t1 != t1) || (t2 != t2)) {
+        return;
+    }
+    if ((t1 < 0) || (t2 < 0)) {
+        return;
+    }
+
+    // Compute points
+    const M3d::Vec3 p1 = r1.o + r1.d * t1;
+    const M3d::Vec3 p2 = r2.o + r2.d * t2;
+
+    // Compute vectors
+    const M3d::Vec3 v1 = normalize(p1);
+    const M3d::Vec3 v2 = normalize(p2);
+
+    // Compute rotation
+    const M3d::Vec3 axis = cross(v1, v2);
+    const double angle = dot(v1, v2);
+    const M3d::Quat rot = M3d::Quat::fromAxisAngle(axis, angle);
+
+    // Multiply with existing rotation
+    rotation = rot * rotation;
 }
 
 void Gander::mouseWheelMoved(int movement) {
@@ -204,6 +305,7 @@ void Gander::run() {
     int lastX = 0;
     int lastY = 0;
     int lastMouseWheelPosition = 0;
+    int lastLeftMouseButton = GLFW_RELEASE;
 
     // Render
     render();
@@ -219,12 +321,17 @@ void Gander::run() {
 
         // Check for dragging
         const int leftMouseButton = glfwGetMouseButton(GLFW_MOUSE_BUTTON_LEFT);
+        if (leftMouseButton != lastLeftMouseButton) {
+            this->previousX = x;
+            this->previousY = y;
+            lastLeftMouseButton = leftMouseButton;
+        }
         if (leftMouseButton == GLFW_PRESS) {
             const int dx = x - lastX;
             const int dy = y - lastY;
             if ((dx != 0) || (dy != 0)) {
                 changed = true;
-                mouseMoved(dx, dy);
+                mouseMoved(x, y);
             }
         }
 

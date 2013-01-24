@@ -46,9 +46,11 @@ private:
     RapidGL::Reader reader;
     const std::string filename;
     double zoom;
+    M3d::Quat rotation;
 // Methods
     static M3d::Mat4 getProjectionMatrix();
-    static M3d::Mat4 getViewMatrix();
+    M3d::Mat4 getViewMatrix() const;
+    void mouseMoved(int dx, int dy);
     void mouseWheelMoved(int movement);
     void render();
 };
@@ -62,7 +64,8 @@ private:
 Gander::Gander(const std::string& filename) :
         filename(filename),
         root(NULL),
-        zoom(-5.0) {
+        zoom(-5.0),
+        rotation(0, 0, 0, 1) {
 
     // Capture working directory before GLFW changes it
 #ifdef __APPLE__
@@ -116,10 +119,33 @@ M3d::Mat4 Gander::getProjectionMatrix() {
 /**
  * Computes the view matrix.
  */
-M3d::Mat4 Gander::getViewMatrix() {
+M3d::Mat4 Gander::getViewMatrix() const {
+
+    // Compute translation matrix
     M3d::Mat4 translationMatrix(1);
-    translationMatrix[3] = M3d::Vec4(0, 0, -3, 1);
-    return translationMatrix;
+    translationMatrix[3] = M3d::Vec4(0, 0, zoom, 1);
+
+    // Compute rotation matrix
+    M3d::Mat4 rotationMatrix = rotation.toMat4();
+
+    // Concatenate
+    return translationMatrix * rotationMatrix;
+}
+
+void Gander::mouseMoved(const int dx, const int dy) {
+
+    // Compute rotation around X axis
+    M3d::Vec3 xAxis = M3d::Vec3(1, 0, 0);
+    const double xAngle = M3d::toRadians(dy);
+    M3d::Quat xRotation = M3d::Quat::fromAxisAngle(xAxis, xAngle);
+
+    // Compute rotation around Y axis
+    M3d::Vec3 yAxis = M3d::Vec3(0, 1, 0);
+    const double yAngle = M3d::toRadians(dx);
+    M3d::Quat yRotation = M3d::Quat::fromAxisAngle(yAxis, yAngle);
+
+    // Concatenate
+    rotation = xRotation * yRotation * rotation;
 }
 
 void Gander::mouseWheelMoved(int movement) {
@@ -175,6 +201,8 @@ void Gander::run() {
     glDisable(GL_DEPTH_TEST);
 
     // Set up variables to hold event state
+    int lastX = 0;
+    int lastY = 0;
     int lastMouseWheelPosition = 0;
 
     // Render
@@ -184,6 +212,25 @@ void Gander::run() {
         // Wait for new events
         glfwWaitEvents();
         bool changed = false;
+
+        // Get mouse position
+        int x, y;
+        glfwGetMousePos(&x, &y);
+
+        // Check for dragging
+        const int leftMouseButton = glfwGetMouseButton(GLFW_MOUSE_BUTTON_LEFT);
+        if (leftMouseButton == GLFW_PRESS) {
+            const int dx = x - lastX;
+            const int dy = y - lastY;
+            if ((dx != 0) || (dy != 0)) {
+                changed = true;
+                mouseMoved(dx, dy);
+            }
+        }
+
+        // Store mouse position for next event
+        lastX = x;
+        lastY = y;
 
         // Check for mouse wheel
         int mouseWheelPosition = glfwGetMouseWheel();

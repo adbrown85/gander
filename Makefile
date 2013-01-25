@@ -5,12 +5,16 @@ CXXOPTS    := $(CXXFLAGS) $(INCLUDES)
 LDFLAGS    :=
 LIBS       := `pkg-config --libs libglfw rapidgl-0`
 LDOPTS     := $(LDFLAGS) $(LIBS)
+objects    := Window.o
 
 # Program
 all: gander
-gander: gander.cxx Window.o
-	@$(CXX) $< $(CXXOPTS) $(LDOPTS) -o $@ Window.o
+gander: gander.cxx $(objects)
+	@$(CXX) $< $(CXXOPTS) $(LDOPTS) -o $@ $(objects)
 clean:
 	@$(RM) gander
-Window.o: Window.cxx Window.h
+
+# Objects
+$(objects):
+%.o: %.cxx %.h
 	@$(CXX) $< $(CXXOPTS) -c -o $@

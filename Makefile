@@ -8,7 +8,9 @@ LDOPTS     := $(LDFLAGS) $(LIBS)
 
 # Program
 all: gander
-gander: gander.cxx
-	@$(CXX) $< $(CXXOPTS) $(LDOPTS) -o $@
+gander: gander.cxx Window.o
+	@$(CXX) $< $(CXXOPTS) $(LDOPTS) -o $@ Window.o
 clean:
 	@$(RM) gander
+Window.o: Window.cxx Window.h
+	@$(CXX) $< $(CXXOPTS) -c -o $@

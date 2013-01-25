@@ -29,6 +29,7 @@
 #include <RapidGL/Visitor.h>
 #include <RapidGL/UniformNodeUnmarshaller.h>
 #include <RapidGL/UseNodeUnmarshaller.h>
+#include "Window.h"
 
 
 class Ray {
@@ -86,12 +87,18 @@ double Sphere::intersectedByRay(const Ray& ray) const {
 /**
  * Application.
  */
-class Gander {
+class Gander : public Window {
 public:
 // Methods
     Gander(const std::string& filename);
-    ~Gander();
     void run();
+protected:
+// Methods
+    virtual void mouseDragged(int x, int y);
+    virtual void mousePressed(int x, int y);
+    virtual void mouseWheelMoved(int movement);
+    virtual void opened();
+    virtual void paint();
 private:
 // Attributes
     RapidGL::Node* root;
@@ -105,9 +112,6 @@ private:
     static Ray createRay(int x, int y);
     static M3d::Mat4 getProjectionMatrix();
     M3d::Mat4 getViewMatrix() const;
-    void mouseMoved(int dx, int dy);
-    void mouseWheelMoved(int movement);
-    void render();
 };
 
 /**
@@ -116,31 +120,13 @@ private:
  * @param filename Path to the file to open
  * @throws std::runtime_error
  */
-Gander::Gander(const std::string& filename) :
+Gander::Gander(const std::string& filename) : Window(filename),
         filename(filename),
         root(NULL),
         zoom(-5.0),
         rotation(0, 0, 0, 1),
         previousX(0),
         previousY(0) {
-
-    // Capture working directory before GLFW changes it
-#ifdef __APPLE__
-    char cwd[PATH_MAX];
-    getcwd(cwd, PATH_MAX);
-#endif
-
-    // Initialize GLFW
-    if (!glfwInit()) {
-        throw std::runtime_error("Could not initialize GLFW!");
-    }
-
-    // Reset working directory
-#ifdef __APPLE__
-    chdir(cwd);
-#endif
-
-    // Add unmarshallers
     reader.addUnmarshaller("attribute", new RapidGL::AttributeNodeUnmarshaller());
     reader.addUnmarshaller("attachment", new RapidGL::AttachmentNodeUnmarshaller());
     reader.addUnmarshaller("clear", new RapidGL::ClearNodeUnmarshaller());
@@ -157,13 +143,6 @@ Gander::Gander(const std::string& filename) :
     reader.addUnmarshaller("translate", new RapidGL::TranslateNodeUnmarshaller());
     reader.addUnmarshaller("uniform", new RapidGL::UniformNodeUnmarshaller());
     reader.addUnmarshaller("use", new RapidGL::UseNodeUnmarshaller());
-}
-
-/**
- * Destructs the application.
- */
-Gander::~Gander() {
-    glfwTerminate();
 }
 
 Ray Gander::createRay(const int x, const int y) {
@@ -207,7 +186,7 @@ M3d::Mat4 Gander::getViewMatrix() const {
     return translationMatrix * rotationMatrix;
 }
 
-void Gander::mouseMoved(const int x, const int y) {
+void Gander::mouseDragged(const int x, const int y) {
 
     // Make sphere
     const Sphere sphere(0.95);
@@ -247,6 +226,15 @@ void Gander::mouseMoved(const int x, const int y) {
 
     // Multiply with existing rotation
     rotation = rot * rotation;
+
+    // Repaint
+    paint();
+}
+
+void Gander::mousePressed(int x, int y) {
+    previousX = 0;
+    previousY = 0;
+    paint();
 }
 
 void Gander::mouseWheelMoved(int movement) {
@@ -255,9 +243,25 @@ void Gander::mouseWheelMoved(int movement) {
     } else if (movement < 0) {
         zoom--;
     }
+    paint();
 }
 
-void Gander::render() {
+void Gander::opened() {
+
+    // Open file
+    std::ifstream file(filename.c_str());
+    if (!file) {
+        throw std::runtime_error("Could not open file!");
+    }
+
+    // Read file
+    root = reader.read(file);
+
+    // Disable depth
+    glDisable(GL_DEPTH_TEST);
+}
+
+void Gander::paint() {
 
     // Set up state
     RapidGL::State state;
@@ -276,83 +280,7 @@ void Gander::render() {
  * Runs the application.
  */
 void Gander::run() {
-
-    // Open file
-    std::ifstream file(filename.c_str());
-    if (!file) {
-        throw std::runtime_error("Could not open file!");
-    }
-
-    // Open window
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-    glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
-    glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
-    if (!glfwOpenWindow(768, 768, 0, 0, 0, 0, 0, 0, GLFW_WINDOW)) {
-        throw std::runtime_error("Could not open window!");
-    }
-
-    // Set window title
-    glfwSetWindowTitle(filename.c_str());
-
-    // Read file
-    root = reader.read(file);
-
-    // Disable depth
-    glDisable(GL_DEPTH_TEST);
-
-    // Set up variables to hold event state
-    int lastX = 0;
-    int lastY = 0;
-    int lastMouseWheelPosition = 0;
-    int lastLeftMouseButton = GLFW_RELEASE;
-
-    // Render
-    render();
-    while (glfwGetWindowParam(GLFW_OPENED)) {
-
-        // Wait for new events
-        glfwWaitEvents();
-        bool changed = false;
-
-        // Get mouse position
-        int x, y;
-        glfwGetMousePos(&x, &y);
-
-        // Check for dragging
-        const int leftMouseButton = glfwGetMouseButton(GLFW_MOUSE_BUTTON_LEFT);
-        if (leftMouseButton != lastLeftMouseButton) {
-            this->previousX = x;
-            this->previousY = y;
-            lastLeftMouseButton = leftMouseButton;
-        }
-        if (leftMouseButton == GLFW_PRESS) {
-            const int dx = x - lastX;
-            const int dy = y - lastY;
-            if ((dx != 0) || (dy != 0)) {
-                changed = true;
-                mouseMoved(x, y);
-            }
-        }
-
-        // Store mouse position for next event
-        lastX = x;
-        lastY = y;
-
-        // Check for mouse wheel
-        int mouseWheelPosition = glfwGetMouseWheel();
-        int mouseWheelMovement = mouseWheelPosition - lastMouseWheelPosition;
-        lastMouseWheelPosition = mouseWheelPosition;
-        if (mouseWheelMovement != 0) {
-            changed = true;
-            mouseWheelMoved(mouseWheelMovement);
-        }
-
-        // Render if anything changed
-        if (changed) {
-            render();
-        }
-    }
+    open();
 }
 
 int main(int argc, char* argv[]) {

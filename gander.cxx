@@ -29,17 +29,8 @@
 #include <RapidGL/Visitor.h>
 #include <RapidGL/UniformNodeUnmarshaller.h>
 #include <RapidGL/UseNodeUnmarshaller.h>
+#include "Ray.h"
 #include "Window.h"
-
-
-class Ray {
-public:
-// Methods
-    Ray(const M3d::Vec3& o, const M3d::Vec3& d) : o(o), d(d) { }
-// Attributes
-    M3d::Vec3 o;
-    M3d::Vec3 d;
-};
 
 
 class Sphere {

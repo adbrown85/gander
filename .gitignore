@@ -1,6 +1,7 @@
 *.bmp
 *.dSYM
 *.frag
+*.o
 *.vert
 *.vlb
 *.xml

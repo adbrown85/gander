@@ -5,7 +5,7 @@ CXXOPTS    := $(CXXFLAGS) $(INCLUDES)
 LDFLAGS    :=
 LIBS       := `pkg-config --libs libglfw rapidgl-0`
 LDOPTS     := $(LDFLAGS) $(LIBS)
-objects    := Window.o
+objects    := Sphere.o Window.o
 
 # Program
 all: gander
@@ -18,3 +18,6 @@ clean:
 $(objects):
 %.o: %.cxx %.h
 	@$(CXX) $< $(CXXOPTS) -c -o $@
+
+# Dependencies
+Sphere.o: Ray.h

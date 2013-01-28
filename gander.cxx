@@ -59,7 +59,7 @@ private:
     M3d::Quat rotation;
     int previousX;
     int previousY;
-    RapidGL::Node* picked;
+    RapidGL::Node* selected;
     double depth;
 // Methods
     static Glycerin::Ray createRay(int x, int y);
@@ -83,7 +83,7 @@ Gander::Gander(const std::string& filename) : Window(filename),
         root(NULL),
         zoom(-5.0),
         rotation(0, 0, 0, 1),
-        picked(NULL),
+        selected(NULL),
         depth(0),
         previousX(0),
         previousY(0) {
@@ -177,7 +177,7 @@ void Gander::leftMousePressed(const int x, const int y) {
 }
 
 void Gander::mouseDragged(const int x, const int y) {
-    if (picked == NULL) {
+    if (selected == NULL) {
         rotate(x, y);
     } else {
         move(x, y);
@@ -208,7 +208,7 @@ void Gander::mouseWheelMoved(int movement) {
 void Gander::move(const int x, const int y) {
 
     // Find translate node
-    RapidGL::Node* parent = picked->getParent();
+    RapidGL::Node* parent = selected->getParent();
     RapidGL::TranslateNode* translateNode = dynamic_cast<RapidGL::TranslateNode*>(parent);
     if (translateNode == NULL) {
         return;
@@ -271,7 +271,7 @@ void Gander::rightMousePressed(const int x, const int y) {
     // Pick
     Picker picker(&state);
     const Pick pick = picker.pick(root, x, y);
-    picked = pick.node;
+    selected = pick.node;
     depth = pick.depth;
 }
 

@@ -182,7 +182,7 @@ void Gander::mouseDragged(const int x, const int y) {
     paint();
 }
 
-void Gander::mousePressed(int x, int y) {
+void Gander::mousePressed(const int x, const int y) {
     previousX = 0;
     previousY = 0;
     paint();

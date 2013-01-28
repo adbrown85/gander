@@ -271,8 +271,12 @@ void Gander::rightMousePressed(const int x, const int y) {
     // Pick
     Picker picker(&state);
     const Pick pick = picker.pick(root, x, y);
-    selected = pick.node;
-    depth = pick.depth;
+    if (pick.node == selected) {
+        selected = NULL;
+    } else {
+        selected = pick.node;
+        depth = pick.depth;
+    }
 }
 
 void Gander::rotate(const int x, const int y) {

@@ -5,11 +5,14 @@ Sphere::Sphere(const double radius) : radius(radius) {
     // empty
 }
 
-double Sphere::intersectedByRay(const Ray& ray) const {
+double Sphere::intersectedByRay(const Glycerin::Ray& ray) const {
 
-    const double a = dot(ray.d, ray.d);
-    const double b = 2 * dot(ray.d, ray.o);
-    const double c = dot(ray.o, ray.o) - (radius * radius);
+    const M3d::Vec3 o = ray.origin.toVec3();
+    const M3d::Vec3 d = ray.direction.toVec3();
+
+    const double a = dot(d, d);
+    const double b = 2 * dot(d, o);
+    const double c = dot(o, o) - (radius * radius);
 
     double q;
     if (b < 0) {

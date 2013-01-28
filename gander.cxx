@@ -29,7 +29,6 @@
 #include <RapidGL/Visitor.h>
 #include <RapidGL/UniformNodeUnmarshaller.h>
 #include <RapidGL/UseNodeUnmarshaller.h>
-#include "Ray.h"
 #include "Sphere.h"
 #include "Window.h"
 
@@ -60,7 +59,7 @@ private:
     int previousX;
     int previousY;
 // Methods
-    static Ray createRay(int x, int y);
+    static Glycerin::Ray createRay(int x, int y);
     static M3d::Mat4 getProjectionMatrix();
     M3d::Mat4 getViewMatrix() const;
 };
@@ -96,22 +95,24 @@ Gander::Gander(const std::string& filename) : Window(filename),
     reader.addUnmarshaller("use", new RapidGL::UseNodeUnmarshaller());
 }
 
-Ray Gander::createRay(const int x, const int y) {
+Glycerin::Ray Gander::createRay(const int x, const int y) {
 
     // Compute origin
-    M3d::Vec3 o;
+    M3d::Vec4 o;
     o.x = (2.0 * ((double) x) / 768.0) - 1.0;
     o.y = (2.0 * (768.0 - ((double) y)) / 768.0) - 1.0;
     o.z = 1.0;
+    o.w = 1.0;
 
     // Compute direction
-    M3d::Vec3 d;
+    M3d::Vec4 d;
     d.x = 0;
     d.y = 0;
     d.z = -1;
+    d.w = 0;
 
     // Return ray
-    return Ray(o, d);
+    return Glycerin::Ray(o, d);
 }
 
 /**
@@ -143,8 +144,8 @@ void Gander::mouseDragged(const int x, const int y) {
     const Sphere sphere(0.95);
 
     // Compute rays
-    const Ray r1 = createRay(previousX, previousY);
-    const Ray r2 = createRay(x, y);
+    const Glycerin::Ray r1 = createRay(previousX, previousY);
+    const Glycerin::Ray r2 = createRay(x, y);
 
     // Compute intersections
     const double t1 = sphere.intersectedByRay(r1);
@@ -163,12 +164,12 @@ void Gander::mouseDragged(const int x, const int y) {
     }
 
     // Compute points
-    const M3d::Vec3 p1 = r1.o + r1.d * t1;
-    const M3d::Vec3 p2 = r2.o + r2.d * t2;
+    const M3d::Vec4 p1 = r1.origin + r1.direction * t1;
+    const M3d::Vec4 p2 = r2.origin + r2.direction * t2;
 
     // Compute vectors
-    const M3d::Vec3 v1 = normalize(p1);
-    const M3d::Vec3 v2 = normalize(p2);
+    const M3d::Vec3 v1 = normalize(p1.toVec3());
+    const M3d::Vec3 v2 = normalize(p2.toVec3());
 
     // Compute rotation
     const M3d::Vec3 axis = cross(v1, v2);

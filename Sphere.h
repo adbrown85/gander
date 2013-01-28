@@ -1,6 +1,6 @@
 #ifndef GANDER_SPHERE_H
 #define GANDER_SPHERE_H
-#include "Ray.h"
+#include <glycerin/Ray.hxx>
 
 
 /**
@@ -10,7 +10,7 @@ class Sphere {
 public:
 // Methods
     Sphere(double radius);
-    double intersectedByRay(const Ray& ray) const;
+    double intersectedByRay(const Glycerin::Ray& ray) const;
 // Attributes
     double radius;
 };

@@ -20,4 +20,3 @@ $(objects):
 	@$(CXX) $< $(CXXOPTS) -c -o $@
 
 # Dependencies
-Sphere.o: Ray.h

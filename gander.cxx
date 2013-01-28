@@ -5,11 +5,11 @@
 #include <string>
 #include <GL/glfw.h>
 #include <glycerin/Projection.hxx>
-#include <m3d/Mat4.hxx>
-#include <m3d/Math.hxx>
-#include <m3d/Quat.hxx>
-#include <m3d/Vec3.hxx>
-#include <m3d/Vec4.hxx>
+#include <m3d/Mat4.h>
+#include <m3d/Math.h>
+#include <m3d/Quat.h>
+#include <m3d/Vec3.h>
+#include <m3d/Vec4.h>
 #include <RapidGL/Reader.h>
 #include <RapidGL/AttachmentNodeUnmarshaller.h>
 #include <RapidGL/AttributeNodeUnmarshaller.h>

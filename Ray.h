@@ -1,6 +1,6 @@
 #ifndef GANDER_RAY_H
 #define GANDER_RAY_H
-#include <m3d/Vec3.hxx>
+#include <m3d/Vec3.h>
 
 
 /**

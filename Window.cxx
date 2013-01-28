@@ -56,6 +56,7 @@ void Window::open() {
     int lastY = 0;
     int lastMouseWheelPosition = 0;
     int lastLeftMouseButton = GLFW_RELEASE;
+    int lastRightMouseButton = GLFW_RELEASE;
 
     // Continuously paint
     paint();
@@ -68,12 +69,17 @@ void Window::open() {
         int x, y;
         glfwGetMousePos(&x, &y);
         const int leftMouseButton = glfwGetMouseButton(GLFW_MOUSE_BUTTON_LEFT);
+        const int rightMouseButton = glfwGetMouseButton(GLFW_MOUSE_BUTTON_RIGHT);
         int mouseWheelPosition = glfwGetMouseWheel();
 
         // Check for button presses
         if (leftMouseButton != lastLeftMouseButton) {
             if (leftMouseButton == GLFW_PRESS) {
-                mousePressed(x, y);
+                mousePressed(GLFW_MOUSE_BUTTON_LEFT, x, y);
+            }
+        } else if (rightMouseButton != lastRightMouseButton) {
+            if (rightMouseButton == GLFW_PRESS) {
+                mousePressed(GLFW_MOUSE_BUTTON_RIGHT, x, y);
             }
         }
 
@@ -96,6 +102,7 @@ void Window::open() {
         lastX = x;
         lastY = y;
         lastLeftMouseButton = leftMouseButton;
+        lastRightMouseButton = rightMouseButton;
         lastMouseWheelPosition = mouseWheelPosition;
     }
 }

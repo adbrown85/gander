@@ -45,7 +45,7 @@ public:
 protected:
 // Methods
     virtual void mouseDragged(int x, int y);
-    virtual void mousePressed(int x, int y);
+    virtual void mousePressed(int button, int x, int y);
     virtual void mouseWheelMoved(int movement);
     virtual void opened();
     virtual void paint();
@@ -183,7 +183,7 @@ void Gander::mouseDragged(const int x, const int y) {
     paint();
 }
 
-void Gander::mousePressed(const int x, const int y) {
+void Gander::mousePressed(const int button, const int x, const int y) {
     previousX = 0;
     previousY = 0;
     paint();

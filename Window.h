@@ -17,7 +17,7 @@ public:
 protected:
 // Methods
     virtual void mouseDragged(int x, int y) = 0;
-    virtual void mousePressed(int x, int y) = 0;
+    virtual void mousePressed(int button, int x, int y) = 0;
     virtual void mouseWheelMoved(int movement) = 0;
     virtual void opened() = 0;
     virtual void paint() = 0;

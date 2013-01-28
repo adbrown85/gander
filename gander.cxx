@@ -208,8 +208,7 @@ void Gander::mouseWheelMoved(int movement) {
 void Gander::move(const int x, const int y) {
 
     // Find translate node
-    RapidGL::Node* parent = selected->getParent();
-    RapidGL::TranslateNode* translateNode = dynamic_cast<RapidGL::TranslateNode*>(parent);
+    RapidGL::TranslateNode* translateNode = RapidGL::findAncestor<RapidGL::TranslateNode>(selected);
     if (translateNode == NULL) {
         return;
     }

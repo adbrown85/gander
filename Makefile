@@ -5,7 +5,7 @@ CXXOPTS    := $(CXXFLAGS) $(INCLUDES)
 LDFLAGS    :=
 LIBS       := `pkg-config --libs libglfw rapidgl-0`
 LDOPTS     := $(LDFLAGS) $(LIBS)
-objects    := Sphere.o Window.o
+objects    := Picker.o Sphere.o Window.o
 
 # Program
 all: gander

@@ -29,6 +29,7 @@
 #include <RapidGL/Visitor.h>
 #include <RapidGL/UniformNodeUnmarshaller.h>
 #include <RapidGL/UseNodeUnmarshaller.h>
+#include "Picker.h"
 #include "Sphere.h"
 #include "Window.h"
 
@@ -58,12 +59,17 @@ private:
     M3d::Quat rotation;
     int previousX;
     int previousY;
+    RapidGL::Node* picked;
+    double depth;
 // Methods
     static Glycerin::Ray createRay(int x, int y);
+    static Glycerin::Ray createRayAlt(int x, int y);
     static M3d::Mat4 getProjectionMatrix();
     M3d::Mat4 getViewMatrix() const;
     void leftMousePressed(int x, int y);
+    void move(int x, int y);
     void rightMousePressed(int x, int y);
+    void rotate(int x, int y);
 };
 
 /**
@@ -77,6 +83,8 @@ Gander::Gander(const std::string& filename) : Window(filename),
         root(NULL),
         zoom(-5.0),
         rotation(0, 0, 0, 1),
+        picked(NULL),
+        depth(0),
         previousX(0),
         previousY(0) {
     reader.addUnmarshaller("attribute", new RapidGL::AttributeNodeUnmarshaller());
@@ -117,6 +125,29 @@ Glycerin::Ray Gander::createRay(const int x, const int y) {
     return Glycerin::Ray(o, d);
 }
 
+Glycerin::Ray Gander::createRayAlt(const int x, const int y) {
+
+    // Get inverse of view projection matrix
+    const M3d::Mat4 mat = inverse(getProjectionMatrix());
+
+    // Get viewport
+    const Glycerin::Viewport viewport = Glycerin::Viewport::getViewport();
+    const int maxY = viewport.height() - 1;
+
+    // Get first point
+    const M3d::Vec3 near(x, maxY - y, 0.0);
+    M3d::Vec4 p1 = Glycerin::Projection::unProject(near, mat, viewport);
+
+    // Get second point
+    const M3d::Vec3 far(x, maxY - y, 1.0);
+    M3d::Vec4 p2 = Glycerin::Projection::unProject(far, mat, viewport);
+
+    // Compute
+    const M3d::Vec4 o(0, 0, 0, 1);
+    const M3d::Vec4 d = M3d::normalize(p2 - p1);
+    return Glycerin::Ray(o, d);
+}
+
 /**
  * Computes the projection matrix.
  */
@@ -148,6 +179,8 @@ void Gander::leftMousePressed(const int x, const int y) {
 void Gander::mouseDragged(const int x, const int y) {
     if (picked == NULL) {
         rotate(x, y);
+    } else {
+        move(x, y);
     }
     previousX = x;
     previousY = y;
@@ -170,6 +203,32 @@ void Gander::mouseWheelMoved(int movement) {
         zoom--;
     }
     paint();
+}
+
+void Gander::move(const int x, const int y) {
+
+    // Find translate node
+    RapidGL::Node* parent = picked->getParent();
+    RapidGL::TranslateNode* translateNode = dynamic_cast<RapidGL::TranslateNode*>(parent);
+    if (translateNode == NULL) {
+        return;
+    }
+
+    const M3d::Mat4 mat = inverse(getViewMatrix());
+
+    const Glycerin::Ray r1 = createRayAlt(previousX, previousY);
+    const double t1 = depth / r1.direction.z;
+    const M3d::Vec4 p1 = (r1.origin + r1.direction * t1);
+
+    const Glycerin::Ray r2 = createRayAlt(x, y);
+    const double t2 = depth / r2.direction.z;
+    const M3d::Vec4 p2 = (r2.origin + r2.direction * t2);
+
+    const M3d::Vec4 v = mat * (p1 - p2);
+
+    M3d::Vec3 translation = translateNode->getTranslation();
+    translation = translation + v.toVec3();
+    translateNode->setTranslation(translation);
 }
 
 void Gander::opened() {
@@ -203,7 +262,17 @@ void Gander::paint() {
 }
 
 void Gander::rightMousePressed(const int x, const int y) {
-    // empty
+
+    // Set up state
+    RapidGL::State state;
+    state.setProjectionMatrix(getProjectionMatrix());
+    state.setViewMatrix(getViewMatrix());
+
+    // Pick
+    Picker picker(&state);
+    const Pick pick = picker.pick(root, x, y);
+    picked = pick.node;
+    depth = pick.depth;
 }
 
 void Gander::rotate(const int x, const int y) {

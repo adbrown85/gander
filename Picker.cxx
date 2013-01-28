@@ -34,7 +34,6 @@ Glycerin::Ray Picker::createRay(const int x, const int y) {
 
 Pick Picker::pick(RapidGL::Node* root, const int x, const int y) {
     const Glycerin::Ray ray = createRay(x, y);
-    std::cerr << "ray = " << ray << std::endl;
     pick(root, ray);
     Pick p;
     p.node = picked;

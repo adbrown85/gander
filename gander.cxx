@@ -62,6 +62,8 @@ private:
     static Glycerin::Ray createRay(int x, int y);
     static M3d::Mat4 getProjectionMatrix();
     M3d::Mat4 getViewMatrix() const;
+    void leftMousePressed(int x, int y);
+    void rightMousePressed(int x, int y);
 };
 
 /**
@@ -138,54 +140,26 @@ M3d::Mat4 Gander::getViewMatrix() const {
     return translationMatrix * rotationMatrix;
 }
 
-void Gander::mouseDragged(const int x, const int y) {
-
-    // Make sphere
-    const Sphere sphere(0.95);
-
-    // Compute rays
-    const Glycerin::Ray r1 = createRay(previousX, previousY);
-    const Glycerin::Ray r2 = createRay(x, y);
-
-    // Compute intersections
-    const double t1 = sphere.intersectedByRay(r1);
-    const double t2 = sphere.intersectedByRay(r2);
-
-    // Update last mouse coordinates
+void Gander::leftMousePressed(const int x, const int y) {
     previousX = x;
     previousY = y;
+}
 
-    // No intersection
-    if ((t1 != t1) || (t2 != t2)) {
-        return;
+void Gander::mouseDragged(const int x, const int y) {
+    if (picked == NULL) {
+        rotate(x, y);
     }
-    if ((t1 < 0) || (t2 < 0)) {
-        return;
-    }
-
-    // Compute points
-    const M3d::Vec4 p1 = r1.origin + r1.direction * t1;
-    const M3d::Vec4 p2 = r2.origin + r2.direction * t2;
-
-    // Compute vectors
-    const M3d::Vec3 v1 = normalize(p1.toVec3());
-    const M3d::Vec3 v2 = normalize(p2.toVec3());
-
-    // Compute rotation
-    const M3d::Vec3 axis = cross(v1, v2);
-    const double angle = dot(v1, v2);
-    const M3d::Quat rot = M3d::Quat::fromAxisAngle(axis, angle);
-
-    // Multiply with existing rotation
-    rotation = rot * rotation;
-
-    // Repaint
+    previousX = x;
+    previousY = y;
     paint();
 }
 
 void Gander::mousePressed(const int button, const int x, const int y) {
-    previousX = 0;
-    previousY = 0;
+    if (button == GLFW_MOUSE_BUTTON_LEFT) {
+        leftMousePressed(x, y);
+    } else if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+        rightMousePressed(x, y);
+    }
     paint();
 }
 
@@ -226,6 +200,48 @@ void Gander::paint() {
 
     // Refresh
     glfwSwapBuffers();
+}
+
+void Gander::rightMousePressed(const int x, const int y) {
+    // empty
+}
+
+void Gander::rotate(const int x, const int y) {
+
+    // Make sphere
+    const Sphere sphere(0.95);
+
+    // Compute rays
+    const Glycerin::Ray r1 = createRay(previousX, previousY);
+    const Glycerin::Ray r2 = createRay(x, y);
+
+    // Compute intersections
+    const double t1 = sphere.intersectedByRay(r1);
+    const double t2 = sphere.intersectedByRay(r2);
+
+    // No intersection
+    if ((t1 != t1) || (t2 != t2)) {
+        return;
+    }
+    if ((t1 < 0) || (t2 < 0)) {
+        return;
+    }
+
+    // Compute points
+    const M3d::Vec4 p1 = r1.origin + r1.direction * t1;
+    const M3d::Vec4 p2 = r2.origin + r2.direction * t2;
+
+    // Compute vectors
+    const M3d::Vec3 v1 = normalize(p1.toVec3());
+    const M3d::Vec3 v2 = normalize(p2.toVec3());
+
+    // Compute rotation
+    const M3d::Vec3 axis = cross(v1, v2);
+    const double angle = dot(v1, v2);
+    const M3d::Quat rot = M3d::Quat::fromAxisAngle(axis, angle);
+
+    // Multiply with existing rotation
+    rotation = rot * rotation;
 }
 
 /**

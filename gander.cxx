@@ -241,11 +241,14 @@ void Gander::opened() {
     // Read file
     root = reader.read(file);
 
-    // Disable depth
-    glDisable(GL_DEPTH_TEST);
+    // Enable depth
+    glEnable(GL_DEPTH_TEST);
 }
 
 void Gander::paint() {
+
+    // Clear depth
+    glClear(GL_DEPTH_BUFFER_BIT);
 
     // Set up state
     RapidGL::State state;

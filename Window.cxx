@@ -44,7 +44,7 @@ void Window::open() {
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
     glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
-    if (!glfwOpenWindow(DEFAULT_WIDTH, DEFAULT_HEIGHT, 0, 0, 0, 0, 0, 0, GLFW_WINDOW)) {
+    if (!glfwOpenWindow(DEFAULT_WIDTH, DEFAULT_HEIGHT, 0, 0, 0, 0, 24, 0, GLFW_WINDOW)) {
         throw std::runtime_error("Could not open window!");
     }
 

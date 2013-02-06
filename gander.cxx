@@ -16,8 +16,11 @@
 #include <RapidGL/ClearNodeUnmarshaller.h>
 #include <RapidGL/CubeNodeUnmarshaller.h>
 #include <RapidGL/CullNodeUnmarshaller.h>
+#include <RapidGL/DepthFunctionNodeUnmarshaller.h>
 #include <RapidGL/FramebufferNodeUnmarshaller.h>
+#include <RapidGL/PolygonModeNodeUnmarshaller.h>
 #include <RapidGL/ProgramNodeUnmarshaller.h>
+#include <RapidGL/RenderbufferNodeUnmarshaller.h>
 #include <RapidGL/RotateNodeUnmarshaller.h>
 #include <RapidGL/ScaleNodeUnmarshaller.h>
 #include <RapidGL/SceneNodeUnmarshaller.h>
@@ -92,8 +95,11 @@ Gander::Gander(const std::string& filename) : Window(filename),
     reader.addUnmarshaller("clear", new RapidGL::ClearNodeUnmarshaller());
     reader.addUnmarshaller("cube", new RapidGL::CubeNodeUnmarshaller());
     reader.addUnmarshaller("cull", new RapidGL::CullNodeUnmarshaller());
+    reader.addUnmarshaller("depth", new RapidGL::DepthFunctionNodeUnmarshaller());
     reader.addUnmarshaller("framebuffer", new RapidGL::FramebufferNodeUnmarshaller());
+    reader.addUnmarshaller("polygon", new RapidGL::PolygonModeNodeUnmarshaller());
     reader.addUnmarshaller("program", new RapidGL::ProgramNodeUnmarshaller());
+    reader.addUnmarshaller("renderbuffer", new RapidGL::RenderbufferNodeUnmarshaller());
     reader.addUnmarshaller("rotate", new RapidGL::RotateNodeUnmarshaller());
     reader.addUnmarshaller("scale", new RapidGL::ScaleNodeUnmarshaller());
     reader.addUnmarshaller("scene", new RapidGL::SceneNodeUnmarshaller());

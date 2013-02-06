@@ -253,9 +253,6 @@ void Gander::opened() {
 
 void Gander::paint() {
 
-    // Clear depth
-    glClear(GL_DEPTH_BUFFER_BIT);
-
     // Set up state
     RapidGL::State state;
     state.setProjectionMatrix(getProjectionMatrix());

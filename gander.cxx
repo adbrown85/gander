@@ -18,6 +18,8 @@
 #include <RapidGL/CullNodeUnmarshaller.h>
 #include <RapidGL/DepthFunctionNodeUnmarshaller.h>
 #include <RapidGL/FramebufferNodeUnmarshaller.h>
+#include <RapidGL/GroupNodeUnmarshaller.h>
+#include <RapidGL/InstanceNodeUnmarshaller.h>
 #include <RapidGL/PolygonModeNodeUnmarshaller.h>
 #include <RapidGL/ProgramNodeUnmarshaller.h>
 #include <RapidGL/RenderbufferNodeUnmarshaller.h>
@@ -97,6 +99,8 @@ Gander::Gander(const std::string& filename) : Window(filename),
     reader.addUnmarshaller("cull", new RapidGL::CullNodeUnmarshaller());
     reader.addUnmarshaller("depth", new RapidGL::DepthFunctionNodeUnmarshaller());
     reader.addUnmarshaller("framebuffer", new RapidGL::FramebufferNodeUnmarshaller());
+    reader.addUnmarshaller("group", new RapidGL::GroupNodeUnmarshaller());
+    reader.addUnmarshaller("instance", new RapidGL::InstanceNodeUnmarshaller());
     reader.addUnmarshaller("polygon", new RapidGL::PolygonModeNodeUnmarshaller());
     reader.addUnmarshaller("program", new RapidGL::ProgramNodeUnmarshaller());
     reader.addUnmarshaller("renderbuffer", new RapidGL::RenderbufferNodeUnmarshaller());

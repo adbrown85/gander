@@ -40,6 +40,7 @@
 #include "Picker.h"
 #include "Sphere.h"
 #include "Window.h"
+#include "BlendNodeUnmarshaller.h"
 
 
 
@@ -101,6 +102,7 @@ Gander::Gander(const std::string& filename) : Window(filename),
         textRenderer(NULL) {
     reader.addUnmarshaller("attribute", new RapidGL::AttributeNodeUnmarshaller());
     reader.addUnmarshaller("attachment", new RapidGL::AttachmentNodeUnmarshaller());
+    reader.addUnmarshaller("blend", new BlendNodeUnmarshaller());
     reader.addUnmarshaller("clear", new RapidGL::ClearNodeUnmarshaller());
     reader.addUnmarshaller("cube", new RapidGL::CubeNodeUnmarshaller());
     reader.addUnmarshaller("cull", new RapidGL::CullNodeUnmarshaller());

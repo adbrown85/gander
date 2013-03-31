@@ -13,6 +13,8 @@ gander: gander.cxx $(objects)
 	@$(CXX) $< $(CXXOPTS) $(LDOPTS) -o $@ $(objects)
 clean:
 	@$(RM) gander
+	@$(RM) *.o
+	@$(RM) -r *.dSYM
 
 # Objects
 $(objects):

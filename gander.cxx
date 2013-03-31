@@ -5,6 +5,7 @@
 #include <string>
 #include <GL/glfw.h>
 #include <glycerin/Projection.hxx>
+#include <glycerin/TextRenderer.hxx>
 #include <m3d/Mat4.h>
 #include <m3d/Math.h>
 #include <m3d/Quat.h>
@@ -66,6 +67,7 @@ private:
     int previousY;
     RapidGL::Node* selected;
     double depth;
+    Glycerin::TextRenderer *textRenderer;
 // Methods
     static Glycerin::Ray createRay(int x, int y);
     static Glycerin::Ray createRayAlt(int x, int y);
@@ -91,7 +93,8 @@ Gander::Gander(const std::string& filename) : Window(filename),
         selected(NULL),
         depth(0),
         previousX(0),
-        previousY(0) {
+        previousY(0),
+        textRenderer(NULL) {
     reader.addUnmarshaller("attribute", new RapidGL::AttributeNodeUnmarshaller());
     reader.addUnmarshaller("attachment", new RapidGL::AttachmentNodeUnmarshaller());
     reader.addUnmarshaller("clear", new RapidGL::ClearNodeUnmarshaller());
@@ -253,6 +256,9 @@ void Gander::opened() {
 
     // Enable depth
     glEnable(GL_DEPTH_TEST);
+
+    // Create text renderer
+    textRenderer = new Glycerin::TextRenderer();
 }
 
 void Gander::paint() {
@@ -265,6 +271,14 @@ void Gander::paint() {
     // Visit the root node
     RapidGL::Visitor visitor(&state);
     visitor.visit(root);
+
+    // Draw text
+    glDisable(GL_DEPTH_TEST);
+    textRenderer->beginRendering(768, 768);
+    textRenderer->draw("0 fps", 10, 740);
+    textRenderer->endRendering();
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
 
     // Refresh
     glfwSwapBuffers();

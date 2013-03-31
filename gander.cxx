@@ -197,7 +197,6 @@ void Gander::mouseDragged(const int x, const int y) {
     }
     previousX = x;
     previousY = y;
-    paint();
 }
 
 void Gander::mousePressed(const int button, const int x, const int y) {
@@ -206,7 +205,6 @@ void Gander::mousePressed(const int button, const int x, const int y) {
     } else if (button == GLFW_MOUSE_BUTTON_RIGHT) {
         rightMousePressed(x, y);
     }
-    paint();
 }
 
 void Gander::mouseWheelMoved(int movement) {
@@ -215,7 +213,6 @@ void Gander::mouseWheelMoved(int movement) {
     } else if (movement < 0) {
         zoom--;
     }
-    paint();
 }
 
 void Gander::move(const int x, const int y) {
@@ -279,9 +276,6 @@ void Gander::paint() {
     textRenderer->endRendering();
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
-
-    // Refresh
-    glfwSwapBuffers();
 }
 
 void Gander::rightMousePressed(const int x, const int y) {

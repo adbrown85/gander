@@ -62,9 +62,6 @@ void Window::open() {
     paint();
     while (glfwGetWindowParam(GLFW_OPENED)) {
 
-        // Wait for new events
-        glfwWaitEvents();
-
         // Get state of mouse
         int x, y;
         glfwGetMousePos(&x, &y);
@@ -97,6 +94,10 @@ void Window::open() {
         if (mouseWheelMovement != 0) {
             mouseWheelMoved(mouseWheelMovement);
         }
+
+        // Paint
+        paint();
+        glfwSwapBuffers();
 
         // Store state of mouse for next event
         lastX = x;

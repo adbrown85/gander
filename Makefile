@@ -11,6 +11,7 @@ LDOPTS     := $(LDFLAGS) $(LIBS)
 INSTALL    := install
 objects    := Picker.o Sphere.o Window.o \
               BlendNode.o BlendNodeUnmarshaller.o \
+              BooleanAndNode.o BooleanAndNodeUnmarshaller.o \
               SortNode.o SortNodeUnmarshaller.o
 
 # Program
@@ -35,4 +36,5 @@ uninstall:
 
 # Dependencies
 BlendNodeUnmarshaller.o: BlendNode.h
+BooleanAndNodeUnmarshaller.o: BooleanAndNode.h
 SortNodeUnmarshaller.o: SortNode.h

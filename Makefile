@@ -10,7 +10,8 @@ LIBS       := `pkg-config --libs libglfw rapidgl-0`
 LDOPTS     := $(LDFLAGS) $(LIBS)
 INSTALL    := install
 objects    := Picker.o Sphere.o Window.o \
-              BlendNode.o BlendNodeUnmarshaller.o
+              BlendNode.o BlendNodeUnmarshaller.o \
+              SortNode.o SortNodeUnmarshaller.o
 
 # Program
 all: gander
@@ -34,3 +35,4 @@ uninstall:
 
 # Dependencies
 BlendNodeUnmarshaller.o: BlendNode.h
+SortNodeUnmarshaller.o: SortNode.h

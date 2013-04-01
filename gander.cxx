@@ -41,6 +41,7 @@
 #include "Sphere.h"
 #include "Window.h"
 #include "BlendNodeUnmarshaller.h"
+#include "SortNodeUnmarshaller.h"
 
 
 
@@ -117,6 +118,7 @@ Gander::Gander(const std::string& filename) : Window(filename),
     reader.addUnmarshaller("scale", new RapidGL::ScaleNodeUnmarshaller());
     reader.addUnmarshaller("scene", new RapidGL::SceneNodeUnmarshaller());
     reader.addUnmarshaller("shader", new RapidGL::ShaderNodeUnmarshaller());
+    reader.addUnmarshaller("sort", new SortNodeUnmarshaller());
     reader.addUnmarshaller("square", new RapidGL::SquareNodeUnmarshaller());
     reader.addUnmarshaller("texture", new RapidGL::TextureNodeUnmarshaller());
     reader.addUnmarshaller("translate", new RapidGL::TranslateNodeUnmarshaller());

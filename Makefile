@@ -1,3 +1,6 @@
+prefix     := /usr/local
+bindir     := $(prefix)/bin
+
 CXX        := g++
 CXXFLAGS   := -g
 INCLUDES   := `pkg-config --cflags rapidgl-0`

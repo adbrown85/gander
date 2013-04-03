@@ -28,5 +28,7 @@ $(objects):
 # Installation
 install:
 	$(INSTALL) gander $(bindir)
+uninstall:
+	$(RM) $(bindir)/gander
 
 # Dependencies

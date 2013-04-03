@@ -8,6 +8,7 @@ CXXOPTS    := $(CXXFLAGS) $(INCLUDES)
 LDFLAGS    :=
 LIBS       := `pkg-config --libs libglfw rapidgl-0`
 LDOPTS     := $(LDFLAGS) $(LIBS)
+INSTALL    := install
 objects    := Picker.o Sphere.o Window.o
 
 # Program
@@ -23,5 +24,9 @@ clean:
 $(objects):
 %.o: %.cxx %.h
 	@$(CXX) $< $(CXXOPTS) -c -o $@
+
+# Installation
+install:
+	$(INSTALL) gander $(bindir)
 
 # Dependencies

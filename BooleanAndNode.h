@@ -11,15 +11,6 @@
 
 
 /**
- * Minimum and maximum corners of a shape.
- */
-struct Extent {
-    M3d::Vec4 min;
-    M3d::Vec4 max;
-};
-
-
-/**
  * Node drawing the intersection between two cubes.
  */
 class BooleanAndNode : public RapidGL::Node, public RapidGL::NodeListener {
@@ -31,6 +22,11 @@ public:
     virtual void preVisit(RapidGL::State& state);
     virtual void visit(RapidGL::State& state);
 private:
+// Types
+    struct Extent {
+        M3d::Vec4 min;
+        M3d::Vec4 max;
+    };
 // Attributes
     bool ready;
     bool dirty;

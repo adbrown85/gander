@@ -99,7 +99,7 @@ Gloop::VertexArrayObject BooleanAndNode::createVertexArrayObject(const Gloop::Pr
     return vao;
 }
 
-Extent BooleanAndNode::findExtent(RapidGL::CubeNode* const cubeNode) {
+BooleanAndNode::Extent BooleanAndNode::findExtent(RapidGL::CubeNode* const cubeNode) {
 
     // Find the root
     const RapidGL::Node* root = RapidGL::findRoot(this);

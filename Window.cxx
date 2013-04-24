@@ -20,6 +20,7 @@ Window::Window(const std::string& title) {
     chdir(cwd);
 #endif
 
+    glfwSwapInterval(0);
     glfwSetWindowTitle(title.c_str());
 }
 

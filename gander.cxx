@@ -73,7 +73,8 @@ private:
     RapidGL::Node* selected;
     double depth;
     Glycerin::TextRenderer *textRenderer;
-    long frames;
+    int frames;
+    std::string framesPerSecond;
 // Methods
     static Glycerin::Ray createRay(int x, int y);
     static Glycerin::Ray createRayAlt(int x, int y);
@@ -101,6 +102,7 @@ Gander::Gander(const std::string& filename) : Window(filename),
         previousX(0),
         previousY(0),
         frames(0),
+        framesPerSecond("0 fps"),
         textRenderer(NULL) {
     reader.addUnmarshaller("attribute", new RapidGL::AttributeNodeUnmarshaller());
     reader.addUnmarshaller("attachment", new RapidGL::AttachmentNodeUnmarshaller());
@@ -282,13 +284,21 @@ void Gander::paint() {
     RapidGL::Visitor visitor(&state);
     visitor.visit(root);
 
-    // Draw text
+    // Update frames per second
     ++frames;
-    std::stringstream stream;
-    stream << std::fixed << std::setprecision(2) << (((double) frames) / glfwGetTime()) << " fps";
+    const double time = glfwGetTime();
+    if (time >= 1) {
+        glfwSetTime(0);
+        std::stringstream stream;
+        stream << ((int) ((((double) frames) / time) + 0.5)) << " fps";
+        framesPerSecond = stream.str();
+        frames = 0;
+    }
+
+    // Draw text
     glDisable(GL_DEPTH_TEST);
     textRenderer->beginRendering(768, 768);
-    textRenderer->draw(stream.str(), 10, 740);
+    textRenderer->draw(framesPerSecond, 10, 740);
     textRenderer->endRendering();
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);

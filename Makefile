@@ -17,7 +17,7 @@ objects    := Picker.o Sphere.o Window.o \
 # Program
 all: gander
 gander: gander.cxx $(objects)
-	@$(CXX) $< $(CXXOPTS) $(LDOPTS) -o $@ $(objects)
+	@$(CXX) $< $(CXXOPTS) -o $@ $(objects) $(LDOPTS)
 clean:
 	@$(RM) gander
 	@$(RM) *.o

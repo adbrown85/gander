@@ -39,7 +39,7 @@
 #include <RapidGL/UseNodeUnmarshaller.h>
 #include "Picker.h"
 #include "Sphere.h"
-#include "Window.h"
+#include "WindowAdapter.h"
 #include "BlendNodeUnmarshaller.h"
 #include "BooleanAndNodeUnmarshaller.h"
 #include "SortNodeUnmarshaller.h"
@@ -49,7 +49,7 @@
 /**
  * Application.
  */
-class Gander : public Window {
+class Gander : public WindowAdapter {
 public:
 // Methods
     Gander(const std::string& filename);
@@ -92,7 +92,7 @@ private:
  * @param filename Path to the file to open
  * @throws std::runtime_error
  */
-Gander::Gander(const std::string& filename) : Window(filename),
+Gander::Gander(const std::string& filename) : WindowAdapter(filename),
         filename(filename),
         root(NULL),
         zoom(-5.0),

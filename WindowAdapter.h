@@ -1,5 +1,5 @@
-#ifndef GANDER_WINDOW_H
-#define GANDER_WINDOW_H
+#ifndef GANDER_WINDOW_ADAPTER_H
+#define GANDER_WINDOW_ADAPTER_H
 #include <vector>
 #include <GL/glfw.h>
 
@@ -7,11 +7,11 @@
 /**
  * Basic OpenGL window.
  */
-class Window {
+class WindowAdapter {
 public:
 // Methods
-    Window(const std::string& title);
-    virtual ~Window();
+    WindowAdapter(const std::string& title);
+    virtual ~WindowAdapter();
     void close();
     void open();
 protected:

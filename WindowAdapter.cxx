@@ -1,8 +1,8 @@
 #include <algorithm>
 #include <stdexcept>
-#include "Window.h"
+#include "WindowAdapter.h"
 
-Window::Window(const std::string& title) {
+WindowAdapter::WindowAdapter(const std::string& title) {
 
     // Capture working directory before GLFW changes it
 #ifdef __APPLE__
@@ -24,21 +24,21 @@ Window::Window(const std::string& title) {
     glfwSetWindowTitle(title.c_str());
 }
 
-Window::~Window() {
+WindowAdapter::~WindowAdapter() {
     glfwTerminate();
 }
 
 /*
-void Window::addWindowListener(WindowListener* listener) {
+void WindowAdapter::addWindowListener(WindowListener* listener) {
     windowListeners.push_back(listener);
 }
 */
 
-void Window::close() {
+void WindowAdapter::close() {
     glfwCloseWindow();
 }
 
-void Window::open() {
+void WindowAdapter::open() {
 
     // Open the window
     glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
@@ -110,7 +110,7 @@ void Window::open() {
 }
 
 /*
-void Window::removeWindowListener(WindowListener* listener) {
+void WindowAdapter::removeWindowListener(WindowListener* listener) {
     std::vector<WindowListener*>::iterator it = std::find(windowListeners.begin(), windowListeners.end(), listener);
     if (it != windowListeners.end()) {
         windowListeners.erase(it);

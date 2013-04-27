@@ -9,7 +9,7 @@ LDFLAGS    :=
 LIBS       := `pkg-config --libs libglfw rapidgl-0`
 LDOPTS     := $(LDFLAGS) $(LIBS)
 INSTALL    := install
-objects    := Picker.o Sphere.o Window.o \
+objects    := Picker.o Sphere.o WindowAdapter.o \
               BlendNode.o BlendNodeUnmarshaller.o \
               BooleanAndNode.o BooleanAndNodeUnmarshaller.o \
               SortNode.o SortNodeUnmarshaller.o

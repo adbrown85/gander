@@ -6,12 +6,13 @@ CXXFLAGS   := -g
 INCLUDES   := `pkg-config --cflags rapidgl-0`
 CXXOPTS    := $(CXXFLAGS) $(INCLUDES)
 LDFLAGS    :=
-LIBS       := `pkg-config --libs libglfw rapidgl-0`
+LIBS       := `pkg-config --libs libglfw rapidgl-0` -lPocoFoundation
 LDOPTS     := $(LDFLAGS) $(LIBS)
 INSTALL    := install
 objects    := Picker.o Sphere.o WindowAdapter.o \
               BlendNode.o BlendNodeUnmarshaller.o \
               BooleanAndNode.o BooleanAndNodeUnmarshaller.o \
+              BooleanXorNode.o BooleanXorNodeUnmarshaller.o \
               SortNode.o SortNodeUnmarshaller.o
 
 # Program
@@ -37,4 +38,5 @@ uninstall:
 # Dependencies
 BlendNodeUnmarshaller.o: BlendNode.h
 BooleanAndNodeUnmarshaller.o: BooleanAndNode.h
+BooleanXorNodeUnmarshaller.o: BooleanXorNode.h
 SortNodeUnmarshaller.o: SortNode.h

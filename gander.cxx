@@ -42,6 +42,7 @@
 #include "WindowAdapter.h"
 #include "BlendNodeUnmarshaller.h"
 #include "BooleanAndNodeUnmarshaller.h"
+#include "BooleanXorNodeUnmarshaller.h"
 #include "SortNodeUnmarshaller.h"
 
 
@@ -108,6 +109,7 @@ Gander::Gander(const std::string& filename) : WindowAdapter(filename),
     reader.addUnmarshaller("attachment", new RapidGL::AttachmentNodeUnmarshaller());
     reader.addUnmarshaller("blend", new BlendNodeUnmarshaller());
     reader.addUnmarshaller("booleanAnd", new BooleanAndNodeUnmarshaller());
+    reader.addUnmarshaller("booleanXor", new BooleanXorNodeUnmarshaller());
     reader.addUnmarshaller("clear", new RapidGL::ClearNodeUnmarshaller());
     reader.addUnmarshaller("cube", new RapidGL::CubeNodeUnmarshaller());
     reader.addUnmarshaller("cull", new RapidGL::CullNodeUnmarshaller());

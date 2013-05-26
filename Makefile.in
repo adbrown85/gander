@@ -1,3 +1,5 @@
+# @configure_input@
+
 # Directories
 prefix      := /usr/local
 bindir      := $(prefix)/bin

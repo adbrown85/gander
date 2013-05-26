@@ -1,6 +1,7 @@
 # Directories
 prefix      := /usr/local
 bindir      := $(prefix)/bin
+srcdir      := .
 
 # Tools
 CXX         := g++
@@ -9,7 +10,7 @@ INSTALL     := install
 # Compiler options
 CPPFLAGS    :=
 CXXFLAGS    := -g
-INCLUDES    := `pkg-config --cflags rapidgl-0`
+INCLUDES    := -I$(srcdir) `pkg-config --cflags rapidgl-0`
 CXXOPTS     := $(CPPFLAGS) $(CXXFLAGS) $(INCLUDES)
 
 # Linker options

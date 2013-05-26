@@ -7,8 +7,8 @@ bindir      := @bindir@
 srcdir      := @srcdir@
 
 # Tools
-CXX         := g++
-INSTALL     := install
+CXX         := @CXX@
+INSTALL     := @INSTALL@
 
 # Compiler options
 CPPFLAGS    :=

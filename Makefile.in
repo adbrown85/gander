@@ -11,10 +11,12 @@ CXX         := @CXX@
 INSTALL     := @INSTALL@
 
 # Compiler options
-CPPFLAGS    :=
-CXXFLAGS    := -g
-INCLUDES    := -I$(srcdir) `pkg-config --cflags rapidgl-0`
-CXXOPTS     := $(CPPFLAGS) $(CXXFLAGS) $(INCLUDES)
+CPPFLAGS    := @CPPFLAGS@
+CXXFLAGS    := @CXXFLAGS@
+INCLUDES    := -I$(srcdir)
+DEFS        := @DEFS@
+DEPS_CFLAGS := @DEPS_CFLAGS@
+CXXOPTS     := $(CPPFLAGS) $(CXXFLAGS) $(INCLUDES) $(DEFS) $(DEPS_CFLAGS)
 
 # Linker options
 LDFLAGS     :=

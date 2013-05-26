@@ -39,6 +39,11 @@ clean:
 	@$(RM) gander
 	@$(RM) *.o
 	@$(RM) -r *.dSYM
+distclean: clean
+	@$(RM) config.h
+	@$(RM) config.log
+	@$(RM) config.status
+	@$(RM) Makefile
 
 # Objects
 $(objects):

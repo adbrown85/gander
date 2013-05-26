@@ -19,9 +19,10 @@ DEPS_CFLAGS := @DEPS_CFLAGS@
 CXXOPTS     := $(CPPFLAGS) $(CXXFLAGS) $(INCLUDES) $(DEFS) $(DEPS_CFLAGS)
 
 # Linker options
-LDFLAGS     :=
-LIBS        := `pkg-config --libs libglfw rapidgl-0` -lPocoFoundation
-LDOPTS      := $(LDFLAGS) $(LIBS)
+LDFLAGS     := @LDFLAGS@
+LIBS        := @LIBS@
+DEPS_LIBS   := @DEPS_LIBS@
+LDOPTS      := $(LDFLAGS) $(LIBS) $(DEPS_LIBS)
 
 # Files
 objects     := Picker.o Sphere.o WindowAdapter.o \

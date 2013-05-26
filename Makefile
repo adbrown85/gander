@@ -1,27 +1,27 @@
 # Directories
-prefix     := /usr/local
-bindir     := $(prefix)/bin
+prefix      := /usr/local
+bindir      := $(prefix)/bin
 
 # Tools
-CXX        := g++
-INSTALL    := install
+CXX         := g++
+INSTALL     := install
 
 # Compiler options
-CXXFLAGS   := -g
-INCLUDES   := `pkg-config --cflags rapidgl-0`
-CXXOPTS    := $(CXXFLAGS) $(INCLUDES)
+CXXFLAGS    := -g
+INCLUDES    := `pkg-config --cflags rapidgl-0`
+CXXOPTS     := $(CXXFLAGS) $(INCLUDES)
 
 # Linker options
-LDFLAGS    :=
-LIBS       := `pkg-config --libs libglfw rapidgl-0` -lPocoFoundation
-LDOPTS     := $(LDFLAGS) $(LIBS)
+LDFLAGS     :=
+LIBS        := `pkg-config --libs libglfw rapidgl-0` -lPocoFoundation
+LDOPTS      := $(LDFLAGS) $(LIBS)
 
 # Files
-objects    := Picker.o Sphere.o WindowAdapter.o \
-              BlendNode.o BlendNodeUnmarshaller.o \
-              BooleanAndNode.o BooleanAndNodeUnmarshaller.o \
-              BooleanXorNode.o BooleanXorNodeUnmarshaller.o \
-              SortNode.o SortNodeUnmarshaller.o
+objects     := Picker.o Sphere.o WindowAdapter.o \
+               BlendNode.o BlendNodeUnmarshaller.o \
+               BooleanAndNode.o BooleanAndNodeUnmarshaller.o \
+               BooleanXorNode.o BooleanXorNodeUnmarshaller.o \
+               SortNode.o SortNodeUnmarshaller.o
 
 # Program
 all: gander

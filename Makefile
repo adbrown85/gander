@@ -7,9 +7,10 @@ CXX         := g++
 INSTALL     := install
 
 # Compiler options
+CPPFLAGS    :=
 CXXFLAGS    := -g
 INCLUDES    := `pkg-config --cflags rapidgl-0`
-CXXOPTS     := $(CXXFLAGS) $(INCLUDES)
+CXXOPTS     := $(CPPFLAGS) $(CXXFLAGS) $(INCLUDES)
 
 # Linker options
 LDFLAGS     :=

@@ -10,6 +10,8 @@ prefix      := @prefix@
 exec_prefix := @exec_prefix@
 bindir      := @bindir@
 srcdir      := @srcdir@
+distdir     := dist
+tardir      := $(tarname)-$(version)
 
 # Tools
 CXX         := @CXX@
@@ -33,6 +35,7 @@ DEPS_LIBS   := @DEPS_LIBS@
 LDOPTS      := $(LDFLAGS) $(LIBS) $(DEPS_LIBS)
 
 # Files
+tarfile     := $(tarname)-$(version).tar.gz
 objects     := Picker.o Sphere.o WindowAdapter.o \
                BlendNode.o BlendNodeUnmarshaller.o \
                BooleanAndNode.o BooleanAndNodeUnmarshaller.o \
@@ -47,6 +50,7 @@ clean:
 	@$(RM) gander
 	@$(RM) *.o
 	@$(RM) -r *.dSYM
+	@$(RM) -r dist
 distclean: clean
 	@$(RM) config.h
 	@$(RM) config.log
@@ -81,3 +85,19 @@ BlendNodeUnmarshaller.o: BlendNode.h
 BooleanAndNodeUnmarshaller.o: BooleanAndNode.h
 BooleanXorNodeUnmarshaller.o: BooleanXorNode.h
 SortNodeUnmarshaller.o: SortNode.h
+
+# Distribution
+.PHONY: dist
+dist:
+	$(MKDIR) $(tardir)
+	$(CP) *.h $(tardir)
+	$(CP) *.cxx $(tardir)
+	$(CP) configure $(tardir)
+	$(CP) Makefile.in $(tardir)
+	$(CP) config.guess $(tardir)
+	$(CP) config.h.in $(tardir)
+	$(CP) config.sub $(tardir)
+	$(CP) install-sh $(tardir)
+	$(MKDIR) $(distdir)
+	$(TAR) -czf $(distdir)/$(tarfile) $(tardir)
+	$(RM) -r $(tardir)

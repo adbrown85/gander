@@ -15,6 +15,7 @@ config.log
 config.status
 config.sub
 configure
+dist
 install-sh
 Makefile
 m4

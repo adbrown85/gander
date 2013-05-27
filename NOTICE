@@ -1,0 +1,17 @@
+Additional string manipulation is provided by the Poco library developed by
+Gunter Obiltschnig and others.  It is under the Boost Software License and may
+be obtained from http://pocoproject.org.
+
+To create an OpenGL Window Gander uses GLFW, developed by Marcus Geelnard and
+Camilla Beglund.  It is licensed under an unmodified zlib/libpng license, and
+it may be obtained from http://www.glfw.org.
+
+3D math functionality is provided my M3d, written by Andrew Brown.  It is
+under the BSD license and may be obtained from
+http://github.com/adbrown85/m3d.
+
+Graphics utilities are provided by Gloop, Glycerin, and RapidGL written by
+Andrew Brown.  Gloop is under the BSD license and may be obtained from
+http://github.com/adbrown85/gloop.  Glycerin and RapidGL are licensed under
+the GPL and may be obtained from http://github.com/adbrown85/glycerin and
+http://github.com/adbrown85/rapidgl, respectively.

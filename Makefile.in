@@ -96,6 +96,7 @@ dist:
 	$(CP) INSTALL $(tardir)
 	$(CP) LICENSE $(tardir)
 	$(CP) Makefile.in $(tardir)
+	$(CP) NEWS $(tardir)
 	$(CP) NOTICE $(tardir)
 	$(CP) README $(tardir)
 	$(CP) config.guess $(tardir)

@@ -93,7 +93,7 @@ SortNodeUnmarshaller.o: SortNode.h
 
 # Distribution
 .PHONY: dist
-dist:
+dist: gander
 	$(MKDIR) $(tardir)
 	$(CP) *.h $(tardir)
 	$(CP) *.cxx $(tardir)

@@ -46,6 +46,8 @@ objects     := Picker.o Sphere.o WindowAdapter.o \
 all: gander
 gander: gander.cxx $(objects)
 	@$(CXX) $< $(CXXOPTS) -o $@ $(objects) $(LDOPTS)
+
+# Clean up
 clean:
 	@$(RM) gander
 	@$(RM) *.o

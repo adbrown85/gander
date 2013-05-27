@@ -14,6 +14,9 @@ srcdir      := @srcdir@
 # Tools
 CXX         := @CXX@
 INSTALL     := @INSTALL@
+MKDIR       := mkdir -p
+CP          := cp
+TAR         := tar
 
 # Compiler options
 CPPFLAGS    := @CPPFLAGS@

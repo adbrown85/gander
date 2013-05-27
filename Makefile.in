@@ -43,11 +43,13 @@ objects     := Picker.o Sphere.o WindowAdapter.o \
                SortNode.o SortNodeUnmarshaller.o
 
 # Program
+.PHONY: all
 all: gander
 gander: gander.cxx $(objects)
 	@$(CXX) $< $(CXXOPTS) -o $@ $(objects) $(LDOPTS)
 
 # Clean up
+.PHONY: clean distclean maintainer-clean
 clean:
 	@$(RM) gander
 	@$(RM) *.o
@@ -77,6 +79,7 @@ $(objects):
 	@$(CXX) $< $(CXXOPTS) -c -o $@
 
 # Installation
+.PHONY: install uninstall
 install:
 	$(INSTALL) gander $(bindir)
 uninstall:

@@ -50,6 +50,10 @@ gander: gander.cxx $(objects)
 $(objects):
 %.o: %.cxx %.h
 	@$(CXX) $< $(CXXOPTS) -c -o $@
+BlendNodeUnmarshaller.o: BlendNode.h
+BooleanAndNodeUnmarshaller.o: BooleanAndNode.h
+BooleanXorNodeUnmarshaller.o: BooleanXorNode.h
+SortNodeUnmarshaller.o: SortNode.h
 
 # Clean up
 .PHONY: clean distclean maintainer-clean
@@ -82,12 +86,6 @@ install:
 	$(INSTALL) gander $(bindir)
 uninstall:
 	$(RM) $(bindir)/gander
-
-# Dependencies
-BlendNodeUnmarshaller.o: BlendNode.h
-BooleanAndNodeUnmarshaller.o: BooleanAndNode.h
-BooleanXorNodeUnmarshaller.o: BooleanXorNode.h
-SortNodeUnmarshaller.o: SortNode.h
 
 # Distribution
 .PHONY: dist

@@ -1,0 +1,6 @@
+v0.2
+====
+
+ - Added README, LICENSE, INSTALL, HACKING, NOTICE, and NEWS files
+ - Added licensing information to source code
+ - Makefile generates tarball for distribution

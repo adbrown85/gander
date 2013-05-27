@@ -1,0 +1,25 @@
+To install Gander from a distribution, first make sure you have the necessary
+tools and dependencies installed.  You will need g++, GNU Make, GLFW,
+Poco Foundation, M3d, Gloop, Glycerin, and RapidGL.  Windows users will need
+to install a Bourne-compatible shell, like the one provided with MinGW.
+
+Then extract the archive and execute the following three commands:
+
+    ./configure
+    make
+    make install
+
+Unix-based operating systems such as Linux and Mac OS X may need to provide
+administrator privileges to install Gander in the default directory.  On Mac
+OS X and Ubuntu, precede the install command with 'sudo' as shown below.
+
+    sudo make install
+
+The installation directory that Gander is installed into can be modified by
+specifying the 'prefix' option to the configure script.
+
+    ./configure --prefix=$HOME
+
+Gander can be uninstalled by running the command below.
+
+    make uninstall

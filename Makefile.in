@@ -92,6 +92,7 @@ dist:
 	$(MKDIR) $(tardir)
 	$(CP) *.h $(tardir)
 	$(CP) *.cxx $(tardir)
+	$(CP) HACKING $(tardir)
 	$(CP) LICENSE $(tardir)
 	$(CP) Makefile.in $(tardir)
 	$(CP) NOTICE $(tardir)

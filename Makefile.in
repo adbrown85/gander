@@ -47,7 +47,6 @@ objects     := Picker.o Sphere.o WindowAdapter.o \
 all: gander
 gander: gander.cxx $(objects)
 	@$(CXX) $< $(CXXOPTS) -o $@ $(objects) $(LDOPTS)
-$(objects):
 %.o: %.cxx %.h
 	@$(CXX) $< $(CXXOPTS) -c -o $@
 BlendNodeUnmarshaller.o: BlendNode.h

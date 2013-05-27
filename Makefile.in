@@ -47,6 +47,9 @@ objects     := Picker.o Sphere.o WindowAdapter.o \
 all: gander
 gander: gander.cxx $(objects)
 	@$(CXX) $< $(CXXOPTS) -o $@ $(objects) $(LDOPTS)
+$(objects):
+%.o: %.cxx %.h
+	@$(CXX) $< $(CXXOPTS) -c -o $@
 
 # Clean up
 .PHONY: clean distclean maintainer-clean
@@ -72,11 +75,6 @@ maintainer-clean: distclean
 	@$(RM) configure
 	@$(RM) install-sh
 	@$(RM) -r m4
-
-# Objects
-$(objects):
-%.o: %.cxx %.h
-	@$(CXX) $< $(CXXOPTS) -c -o $@
 
 # Installation
 .PHONY: install uninstall

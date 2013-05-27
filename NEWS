@@ -1,3 +1,10 @@
+v0.2.1
+======
+
+ - NEWS file copied to tarball
+ - Generating tarball builds first
+ - Fixed some targets in Makefile not being declared phony
+
 v0.2
 ====
 

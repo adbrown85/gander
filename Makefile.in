@@ -97,6 +97,7 @@ dist:
 	$(CP) LICENSE $(tardir)
 	$(CP) Makefile.in $(tardir)
 	$(CP) NOTICE $(tardir)
+	$(CP) README $(tardir)
 	$(CP) config.guess $(tardir)
 	$(CP) config.h.in $(tardir)
 	$(CP) config.sub $(tardir)

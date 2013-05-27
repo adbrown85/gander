@@ -1,0 +1,22 @@
+Gander
+======
+
+Gander is a lightweight scene renderer for testing and visualizing GLSL
+shaders.  Tying together OpenGL objects and GLSL shaders using traditional code
+can be tedious and error-prone.  Gander makes the process much easier.
+
+Most importantly, Gander features an intuitive XML scene graph that takes care
+of the low-level details in creating OpenGL scenes, allowing the user to focus
+on writing the shaders themselves.
+
+In addition, Gander supports several advanced features that can help
+facilitate more specialized scenes, such as those that need multiple rendering
+passes for example.
+
+Gander is written in C++ using GLFW and should work on both Mac OS X and
+Linux.
+
+To install Gander, see the INSTALL document.  For a rundown on the changes
+between versions, see the NEWS document.  Lastly, if you want to experiment
+with the code or contribute new features or fixes, please see the HACKING
+document.

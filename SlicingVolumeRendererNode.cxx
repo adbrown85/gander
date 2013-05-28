@@ -17,6 +17,7 @@
  */
 #include "config.h"
 #include "SlicingVolumeRendererNode.h"
+#include <algorithm>
 #include <limits>
 #include <stack>
 #include <gloop/TextureTarget.hxx>

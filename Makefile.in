@@ -40,6 +40,7 @@ objects     := Picker.o Sphere.o WindowAdapter.o \
                BlendNode.o BlendNodeUnmarshaller.o \
                BooleanAndNode.o BooleanAndNodeUnmarshaller.o \
                BooleanXorNode.o BooleanXorNodeUnmarshaller.o \
+               SlicingVolumeRendererNode.o SlicingVolumeRendererNodeUnmarshaller.o \
                SortNode.o SortNodeUnmarshaller.o \
                VolumeNode.o VolumeNodeUnmarshaller.o
 
@@ -53,6 +54,8 @@ gander: gander.cxx $(objects)
 BlendNodeUnmarshaller.o: BlendNode.h
 BooleanAndNodeUnmarshaller.o: BooleanAndNode.h
 BooleanXorNodeUnmarshaller.o: BooleanXorNode.h
+SlicingVolumeRendererNode.o: VolumeNode.h
+SlicingVolumeRendererNodeUnmarshaller.o: SlicingVolumeRendererNode.h VolumeNode.h
 SortNodeUnmarshaller.o: SortNode.h
 VolumeNodeUnmarshaller.o: VolumeNode.h
 

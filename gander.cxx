@@ -60,6 +60,7 @@
 #include "BlendNodeUnmarshaller.h"
 #include "BooleanAndNodeUnmarshaller.h"
 #include "BooleanXorNodeUnmarshaller.h"
+#include "SlicingVolumeRendererNodeUnmarshaller.h"
 #include "SortNodeUnmarshaller.h"
 #include "VolumeNodeUnmarshaller.h"
 
@@ -141,6 +142,7 @@ Gander::Gander(const std::string& filename) : WindowAdapter(filename),
     reader.addUnmarshaller("rotate", new RapidGL::RotateNodeUnmarshaller());
     reader.addUnmarshaller("scale", new RapidGL::ScaleNodeUnmarshaller());
     reader.addUnmarshaller("scene", new RapidGL::SceneNodeUnmarshaller());
+    reader.addUnmarshaller("slicingVolumeRenderer", new SlicingVolumeRendererNodeUnmarshaller());
     reader.addUnmarshaller("shader", new RapidGL::ShaderNodeUnmarshaller());
     reader.addUnmarshaller("sort", new SortNodeUnmarshaller());
     reader.addUnmarshaller("square", new RapidGL::SquareNodeUnmarshaller());

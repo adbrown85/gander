@@ -40,7 +40,8 @@ objects     := Picker.o Sphere.o WindowAdapter.o \
                BlendNode.o BlendNodeUnmarshaller.o \
                BooleanAndNode.o BooleanAndNodeUnmarshaller.o \
                BooleanXorNode.o BooleanXorNodeUnmarshaller.o \
-               SortNode.o SortNodeUnmarshaller.o
+               SortNode.o SortNodeUnmarshaller.o \
+               VolumeNode.o VolumeNodeUnmarshaller.o
 
 # Program
 .PHONY: all
@@ -53,6 +54,7 @@ BlendNodeUnmarshaller.o: BlendNode.h
 BooleanAndNodeUnmarshaller.o: BooleanAndNode.h
 BooleanXorNodeUnmarshaller.o: BooleanXorNode.h
 SortNodeUnmarshaller.o: SortNode.h
+VolumeNodeUnmarshaller.o: VolumeNode.h
 
 # Clean up
 .PHONY: clean distclean maintainer-clean

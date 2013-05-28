@@ -61,6 +61,7 @@
 #include "BooleanAndNodeUnmarshaller.h"
 #include "BooleanXorNodeUnmarshaller.h"
 #include "SortNodeUnmarshaller.h"
+#include "VolumeNodeUnmarshaller.h"
 
 
 
@@ -147,6 +148,7 @@ Gander::Gander(const std::string& filename) : WindowAdapter(filename),
     reader.addUnmarshaller("translate", new RapidGL::TranslateNodeUnmarshaller());
     reader.addUnmarshaller("uniform", new RapidGL::UniformNodeUnmarshaller());
     reader.addUnmarshaller("use", new RapidGL::UseNodeUnmarshaller());
+    reader.addUnmarshaller("volume", new VolumeNodeUnmarshaller());
 }
 
 Glycerin::Ray Gander::createRay(const int x, const int y) {
